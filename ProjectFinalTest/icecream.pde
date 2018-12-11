@@ -4,42 +4,40 @@ class Scoop {
   float y;
   
   boolean checkHit;
-  boolean attached=false; 
+  boolean attached = false; 
+  
   float yFixed; 
   float yspeed = random(0.5,2);
 
   int s;
 
-  PImage img;
+  PImage imgScoop;
   
-  Scoop (String file) {
-    for (int i=0; i<scoop.length; i++) { 
-    img = loadImage("scoop" + i + ".png"); 
-    img.resize(0,50); }
- 
-    x = (random(0, width));
-    y =  random(-200, -100); 
+  Scoop (PImage tempImg, float tempX, float tempY) {
+    
+    x = tempX;
+    y = tempY;
+    imgScoop = tempImg;
     s = 5;
    
   }  
   
   void display() {
- 
+   
     if (attached) {
-      // sitting on cone
-      image(img,cone.x1, yFixed, 50, 50);
-      img.resize(0,50); }  
+      image(imgScoop, (cone.x1 - 45), yFixed);
+       }  
       
     else if (y > height){
       y = random(-200,-100);
       x = random (0, width-50); }  
     
     else {
-      image(img, x, y);
-      img.resize(0,50);
+      image(imgScoop,x,y);
        y = y + yspeed;
     }
   }
+
   
 }
  

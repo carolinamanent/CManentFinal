@@ -2,6 +2,7 @@ class Trash {
   
   float x;
   float y;
+  PImage imgTrash;
   
   boolean checkHit;
   boolean attached=false; 
@@ -9,29 +10,21 @@ class Trash {
   float yspeed = random(0.5,2);
 
   int s;
-  int l;
-
-
-  PImage imgTrash;
   
-  Trash (String file) {
-    for (int t=0; t<trash.length; t++) { 
-    imgTrash = loadImage("trash" + t + ".png"); 
-    imgTrash.resize(0,50); }
- 
-    x = (random(0, width));
-    y =  random(-200, -100); 
+   Trash (PImage tempImg, float tempX, float tempY) {
+    
+    x = tempX;
+    y = tempY;
+    imgTrash = tempImg;
     s = 5;
-    l = 0;
    
-  }  
+  }    
   
   void display() {
  
     if (attached) {
       // sitting on cone
-      image(imgTrash,cone.x1, yFixed, 50, 50);
-      imgTrash.resize(0,50);  }  
+      image(imgTrash,cone.x1, yFixed); }  
       
     else if (y > height){
       y = random(-200,-100);
@@ -44,14 +37,9 @@ class Trash {
     }
   }
   
-    void spawn() {
-    for (int i = 0; i< l; i++)
-    { 
-      y = random(-3700, -111); 
-      x = int(random(50, 350));
-      canHit = true;
-    }
 
-  }
   
-}
+  
+} 
+  
+  
