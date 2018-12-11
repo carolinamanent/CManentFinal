@@ -3,8 +3,8 @@ Scoop[] scoop = new Scoop[10];
 PImage[] imgScoop = new PImage[6];
 
 
-Trash[] trash = new Trash[4];
-PImage[] imgTrash = new PImage[2];
+Trash[] trash = new Trash[5];
+PImage[] imgTrash = new PImage[3];
 
 
 boolean moveRight = false;
@@ -15,10 +15,18 @@ int strike = 3;
 float stack = 0; 
 boolean canHit = true;
 
+PImage pinkback;
+PFont curly;
+int gameScreen = 0;
+
 
 void setup(){
-  fullScreen();
-  cone = new Cone();
+  size(933,700);
+  pinkback = loadImage("pinkback.png");
+  
+  curly = createFont("KGKissMeSlowly.ttf", 70);
+  
+  cone = new Cone(); 
   
   for (int i = 0; i < imgScoop.length; i++) {
   imgScoop[i] = loadImage("Scoop" + i + ".png"); 
@@ -40,20 +48,16 @@ void setup(){
 }
 
 void draw(){
-  background(0);
+  background(pinkback);
   
-  cone.move();
-  cone.display();
-  
-  for (int i = 0; i < scoop.length; i++){
-  scoop[i].display();  }
-  
- for (int t = 0; t < trash.length; t++){
-  trash[t].display();  }
-  
-  hitCone(); 
-  hitTrash();
-  score();
+ if (gameScreen == 0){
+   initScreen();
+ } else if (gameScreen == 1) {
+   gameScreen(); 
+ } else if (gameScreen == 2) {
+   gameOverScreen();
+ }  
+
 
 }
 
@@ -71,7 +75,7 @@ void hitTrash() {
   for (int i=0; i<trash.length; i++) {
     if (!trash[i].attached && canHit && dist(trash[i].x, trash[i].y, cone.x1, cone.y1) < 60) {
       trash[i].yFixed = min(trash[i].y, stack);
-      stack = trash[i].yFixed - 25;
+      stack = trash[i].yFixed - 15;
       strike = strike - 1; 
       trash[i].attached = true;
     }
@@ -83,11 +87,11 @@ void hitTrash() {
   stroke(0); 
   strokeWeight(1);
   fill(255);
-  rect(5,5,200,60,10);
+  rect(5,5,150,60,10);
   
 for (int t = 0; t < trash.length; t++){
   
-  float tx = 20;
+  float tx = 25;
   float ty = 45;
       
   if (strike == 2 ){
@@ -98,15 +102,16 @@ for (int t = 0; t < trash.length; t++){
   else if (strike == 1){
   fill(255,0,0);
   textSize(25);
-  text("X", tx + 30, ty);
+  text("X", tx + 40, ty);
   text("X", tx, ty);}
   
   else if (strike == 0){
   fill(255,0,0);
   textSize(25);
   text("X", tx + 60, ty);
-  text("X", tx + 30, ty);
-  text("X", tx, ty);} 
+  text("X", tx + 40, ty);
+  text("X", tx, ty); 
+  restart();} 
   }
 }
 
@@ -132,5 +137,71 @@ void keyReleased() {
  }
 } 
 
-
+public void mousePressed() {
  
+  if (gameScreen == 0) {
+    startGame();
+  }
+  if (gameScreen == 2) {
+    restart();
+  }
+}
+
+// start the game
+
+void startGame() {
+  gameScreen = 1;
+}
+
+void gameOver(){
+  gameScreen = 2;
+}
+
+void restart(){
+  cone = new Cone();
+  
+  for (int i = 0; i < imgScoop.length; i++) {
+  int index = int(random(0, imgScoop.length));
+  scoop[i] = new Scoop (imgScoop[index],random(0,width),random(-300,-100));  }
+  
+  gameScreen = 2; 
+  
+}
+
+
+void initScreen() {
+
+  textAlign(CENTER);
+  fill(255);
+  textFont(curly);
+  textSize(70);
+  text("Ice Cream Dash", width/2,height/2);
+  text("Click to start", width/2, height-100);
+}
+
+void gameScreen(){
+
+  cone.move();
+  cone.display();
+  
+  for (int i = 0; i < scoop.length; i++){
+  scoop[i].display();  }
+  
+ for (int t = 0; t < trash.length; t++){
+  trash[t].display();  }
+  
+  hitCone(); 
+  hitTrash();
+  score();
+}
+
+void gameOverScreen() {
+   
+  textAlign(CENTER);
+  fill(255);
+  textFont(curly);
+  textSize(70);
+  text("Game Over", width/2,height/2);
+  textSize(15);
+  text("Click to restart", width/2, height-200);
+}
