@@ -24,7 +24,7 @@ class Trash {
  
     if (attached) {
       // sitting on cone
-      image(imgTrash,cone.x1, yFixed); }  
+      image(imgTrash,cone.x1-10, yFixed); }  
       
     else if (y > height){
       y = random(-200,-100);

@@ -11,6 +11,7 @@ boolean moveRight = false;
 boolean moveLeft = false;
 
 int strike = 3;
+int count = 0;
 
 float stack = 0; 
 boolean canHit = true;
@@ -69,6 +70,7 @@ void hitCone() {
     if (!scoop[i].attached && canHit && dist(scoop[i].x, scoop[i].y, cone.x1, cone.y1) < 60) {
       scoop[i].yFixed = min(scoop[i].y, stack);
       stack = scoop[i].yFixed - 25; 
+      count = count + 1;
       scoop[i].attached = true;
     }
   }
@@ -78,7 +80,7 @@ void hitTrash() {
   for (int i=0; i<trash.length; i++) {
     if (!trash[i].attached && canHit && dist(trash[i].x, trash[i].y, cone.x1, cone.y1) < 60) {
       trash[i].yFixed = min(trash[i].y, stack);
-      stack = trash[i].yFixed - 15;
+      stack = trash[i].yFixed - 10;
       strike = strike - 1; 
       trash[i].attached = true;
     }
@@ -118,6 +120,14 @@ for (int t = 0; t < trash.length; t++){
   gameOver();} 
   }
 }
+
+void countScore(){
+    for (int i=0; i<scoop.length; i++) {
+      fill(255);
+      textFont(caption,25);
+      text("Score: " + count, width-70,50);      
+    }
+ }
 
 
 
@@ -197,6 +207,7 @@ void gameScreen(){
   hitCone(); 
   hitTrash();
   score();
+  countScore();
 }
 
 void gameOverScreen() {
