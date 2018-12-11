@@ -19,12 +19,15 @@ PImage pinkback;
 PFont curly;
 int gameScreen = 0;
 
+PFont caption;
+
 
 void setup(){
   size(933,700);
   pinkback = loadImage("pinkback.png");
   
   curly = createFont("KGKissMeSlowly.ttf", 70);
+  caption = loadFont("AvenirNext-Heavy.vlw");
   
   cone = new Cone(); 
   
@@ -56,7 +59,7 @@ void draw(){
    gameScreen(); 
  } else if (gameScreen == 2) {
    gameOverScreen();
- }  
+ } 
 
 
 }
@@ -93,7 +96,8 @@ for (int t = 0; t < trash.length; t++){
   
   float tx = 25;
   float ty = 45;
-      
+  textFont(curly);
+   
   if (strike == 2 ){
   fill(255,0,0);
   textSize(25);
@@ -108,10 +112,10 @@ for (int t = 0; t < trash.length; t++){
   else if (strike == 0){
   fill(255,0,0);
   textSize(25);
-  text("X", tx + 60, ty);
+  text("X", tx + 80, ty);
   text("X", tx + 40, ty);
   text("X", tx, ty); 
-  restart();} 
+  gameOver();} 
   }
 }
 
@@ -143,7 +147,10 @@ public void mousePressed() {
     startGame();
   }
   if (gameScreen == 2) {
-    restart();
+    gameOver();
+  }
+    if (gameScreen == 3) {
+    gameOver();
   }
 }
 
@@ -157,30 +164,27 @@ void gameOver(){
   gameScreen = 2;
 }
 
-void restart(){
-  cone = new Cone();
-  
-  for (int i = 0; i < imgScoop.length; i++) {
-  int index = int(random(0, imgScoop.length));
-  scoop[i] = new Scoop (imgScoop[index],random(0,width),random(-300,-100));  }
-  
-  gameScreen = 2; 
-  
-}
-
 
 void initScreen() {
-
+  noStroke();
+  fill(255,100);
+  rectMode(CORNERS);
+  rect(0,0,width,height);
+  
   textAlign(CENTER);
   fill(255);
   textFont(curly);
-  textSize(70);
-  text("Ice Cream Dash", width/2,height/2);
-  text("Click to start", width/2, height-100);
+  textSize(80);
+  text(" Silly Scoops ", width/2,height/2);
+  
+  textSize(50); 
+  textFont(caption,32);
+  text("Catch as many scoops as you can", width/2, height-200);
+  text("& avoid gross garbage", width/2, height-150);
+  text("Click to start", width/2, height-50);
 }
 
 void gameScreen(){
-
   cone.move();
   cone.display();
   
@@ -196,12 +200,14 @@ void gameScreen(){
 }
 
 void gameOverScreen() {
-   
+  noStroke();
+  fill(255,100);
+  rectMode(CORNERS);
+  rect(0,0,width,height);
+  
   textAlign(CENTER);
   fill(255);
   textFont(curly);
   textSize(70);
   text("Game Over", width/2,height/2);
-  textSize(15);
-  text("Click to restart", width/2, height-200);
 }

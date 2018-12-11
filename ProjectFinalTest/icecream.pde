@@ -3,7 +3,6 @@ class Scoop {
   float x;
   float y;
   
-  boolean checkHit;
   boolean attached = false; 
   
   float yFixed; 

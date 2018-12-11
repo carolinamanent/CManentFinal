@@ -4,8 +4,8 @@ class Trash {
   float y;
   PImage imgTrash;
   
-  boolean checkHit;
   boolean attached=false; 
+  
   float yFixed; 
   float yspeed = random(0.5,2);
 
