@@ -22,10 +22,15 @@ int gameScreen = 0;
 
 PFont caption;
 
+import processing.sound.*; // Imp
+SoundFile file;
 
 void setup(){
   size(933,700);
   pinkback = loadImage("pinkback.png");
+   
+  file = new SoundFile(this, "funsound.mp3");
+  file.play();
   
   curly = createFont("KGKissMeSlowly.ttf", 70);
   caption = loadFont("AvenirNext-Heavy.vlw");
@@ -47,8 +52,7 @@ void setup(){
   for (int t = 0; t < trash.length; t++) {
   int index2 = int(random(0, imgTrash.length));
   trash[t] = new Trash (imgTrash[index2],random(0,width),random(-300,-100)); } 
-  
-  stack = cone.y1; 
+    
 }
 
 void draw(){
@@ -57,7 +61,7 @@ void draw(){
  if (gameScreen == 0){
    initScreen();
  } else if (gameScreen == 1) {
-   gameScreen(); 
+   gameScreen();
  } else if (gameScreen == 2) {
    gameOverScreen();
  } 
@@ -66,10 +70,11 @@ void draw(){
 }
 
 void hitCone() {
+  float stack = cone.y1;
   for (int i=0; i<scoop.length; i++) {
     if (!scoop[i].attached && canHit && dist(scoop[i].x, scoop[i].y, cone.x1, cone.y1) < 60) {
       scoop[i].yFixed = min(scoop[i].y, stack);
-      stack = scoop[i].yFixed - 25; 
+      stack = scoop[i].yFixed - 50;
       count = count + 1;
       scoop[i].attached = true;
     }
@@ -77,6 +82,7 @@ void hitCone() {
 }
 
 void hitTrash() {
+  float stack = cone.y1;
   for (int i=0; i<trash.length; i++) {
     if (!trash[i].attached && canHit && dist(trash[i].x, trash[i].y, cone.x1, cone.y1) < 60) {
       trash[i].yFixed = min(trash[i].y, stack);
@@ -189,7 +195,7 @@ void initScreen() {
   
   textSize(50); 
   textFont(caption,32);
-  text("Catch as many scoops as you can", width/2, height-200);
+  text("Use arrow keys to catch as many scoops as you can", width/2, height-200);
   text("& avoid gross garbage", width/2, height-150);
   text("Click to start", width/2, height-50);
 }
@@ -221,4 +227,7 @@ void gameOverScreen() {
   textFont(curly);
   textSize(70);
   text("Game Over", width/2,height/2);
+  textSize(50);
+  text("Score: " + count, width/2,height/2+100);
+
 }

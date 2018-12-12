@@ -7,7 +7,7 @@ class Scoop {
   
   float yFixed; 
   float yspeed = random(0.5,2);
-
+  
   int s;
 
   PImage imgScoop;
